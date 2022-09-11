@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:volley_companion/components/field/field.dart';
 import 'package:volley_companion/components/score_board/score_board.dart';
+import 'package:volley_companion/models/team.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -10,6 +11,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int service = Team.local;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,10 +22,10 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
-                children: [
-                  const ScoreBoard(),
+                children: const [
+                  ScoreBoard(),
                   Padding(
-                    padding: const EdgeInsets.only(top: 50),
+                    padding: EdgeInsets.only(top: 50),
                     child: Field(),
                   ),
                 ],

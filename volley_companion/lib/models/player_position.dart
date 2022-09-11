@@ -1,6 +1,6 @@
 class PlayerPosition {
-  final double top;
-  final double left;
+  double top;
+  double left;
 
   PlayerPosition({
     required this.top,
