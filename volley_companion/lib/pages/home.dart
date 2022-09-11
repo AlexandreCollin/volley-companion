@@ -19,10 +19,10 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
-                children: const [
-                  ScoreBoard(),
+                children: [
+                  const ScoreBoard(),
                   Padding(
-                    padding: EdgeInsets.only(top: 50),
+                    padding: const EdgeInsets.only(top: 50),
                     child: Field(),
                   ),
                 ],
