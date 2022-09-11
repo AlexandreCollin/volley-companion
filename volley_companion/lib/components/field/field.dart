@@ -37,8 +37,9 @@ class Field extends StatelessWidget {
               (index) => Positioned(
                 top: positions[index + 1]!.top,
                 left: positions[index + 1]!.left,
-                child: Image(
-                  image: const AssetImage("assets/black_jersey.png"),
+                child: Jersey(
+                  color: "black",
+                  number: index + 1,
                   height: constraints.maxWidth / 5,
                 ),
               ),
@@ -49,6 +50,7 @@ class Field extends StatelessWidget {
                 top: positions[index + 7]!.top,
                 left: positions[index + 7]!.left,
                 child: Jersey(
+                  color: "red",
                   number: index + 1,
                   height: constraints.maxWidth / 5,
                 ),

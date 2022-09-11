@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
 class Jersey extends StatelessWidget {
-  const Jersey({super.key, this.number, this.height});
+  const Jersey({super.key, this.number, this.height, this.color = "white"});
 
   final int? number;
   final double? height;
+  final String color;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Image(
-          image: const AssetImage("assets/red_jersey.png"),
+          image: AssetImage("assets/${color}_jersey.png"),
           height: height,
         ),
         Positioned(
