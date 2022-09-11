@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:volley_companion/components/score_board/serv_dot.dart';
+import 'package:volley_companion/models/game_score.dart';
 import 'package:volley_companion/models/score.dart';
 import 'package:volley_companion/models/team.dart';
 import 'package:volley_companion/models/volleyball.dart';
@@ -14,11 +15,10 @@ class ScoreBoard extends StatefulWidget {
 }
 
 class _ScoreBoardState extends State<ScoreBoard> {
-  int actSet = 0;
   int service = Team.local;
   List<int> servHistory = [Team.local];
   Score score = Score();
-  List<Score> gameScore = [];
+  GameScore gameScore = GameScore();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,10 @@ class _ScoreBoardState extends State<ScoreBoard> {
                 service = Team.local;
                 if (score.team1 < VolleyBall.maxPoints) return;
                 if (score.team1 >= VolleyBall.maxPoints &&
-                    score.team1 >= score.team2 + VolleyBall.ecartPoints) {}
+                    score.team1 >= score.team2 + VolleyBall.ecartPoints) {
+                  gameScore.setsScores.add(score.clone());
+                  score.reset();
+                }
               }),
               onLongPress: () {
                 if (score.team1 <= 0) return;
@@ -70,7 +73,10 @@ class _ScoreBoardState extends State<ScoreBoard> {
                 service = Team.visitor;
                 if (score.team2 < VolleyBall.maxPoints) return;
                 if (score.team2 >= VolleyBall.maxPoints &&
-                    score.team2 >= score.team1 + VolleyBall.ecartPoints) {}
+                    score.team2 >= score.team1 + VolleyBall.ecartPoints) {
+                  gameScore.setsScores.add(score.clone());
+                  score.reset();
+                }
               }),
               onLongPress: () {
                 if (score.team2 <= 0) return;
@@ -96,14 +102,17 @@ class _ScoreBoardState extends State<ScoreBoard> {
             ),
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            gameScore.length,
-            (index) => Padding(
-              padding: const EdgeInsets.only(left: 5, right: 5),
-              child:
-                  Text("${gameScore[index].team1}-${gameScore[index].team2}"),
+        SizedBox(
+          height: 15,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              gameScore.setsScores.length,
+              (index) => Padding(
+                padding: const EdgeInsets.only(left: 5, right: 5),
+                child: Text(
+                    "${gameScore.setsScores[index].team1}-${gameScore.setsScores[index].team2}"),
+              ),
             ),
           ),
         )
