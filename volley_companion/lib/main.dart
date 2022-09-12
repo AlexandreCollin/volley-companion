@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:volley_companion/pages/home.dart';
+import 'package:volley_companion/pages/game.dart';
 
 void main() {
   runApp(const VolleyballCompanion());
@@ -14,7 +14,7 @@ class VolleyballCompanion extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: const GamePage(),
       debugShowCheckedModeBanner: false,
     );
   }

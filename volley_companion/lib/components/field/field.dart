@@ -6,15 +6,10 @@ import 'package:volley_companion/components/field/jersey.dart';
 import 'package:volley_companion/models/player_position.dart';
 import 'package:volley_companion/models/volleyball.dart';
 
-class Field extends StatefulWidget {
-  const Field({super.key});
+class Field extends StatelessWidget {
+  Field({super.key, this.rotationTeam1 = 6, this.rotationTeam2 = 6});
 
-  @override
-  State<Field> createState() => _FieldState();
-}
-
-class _FieldState extends State<Field> {
-  Map<int, PlayerPosition> positionsTeam1 = {
+  final Map<int, PlayerPosition> positionsTeam1 = {
     1: PlayerPosition(top: 5, left: 7.5),
     2: PlayerPosition(top: 2, left: 7.5),
     3: PlayerPosition(top: 2, left: 2.5),
@@ -23,7 +18,7 @@ class _FieldState extends State<Field> {
     6: PlayerPosition(top: 7.5, left: 2.5),
   };
 
-  Map<int, PlayerPosition> positionsTeam2 = {
+  final Map<int, PlayerPosition> positionsTeam2 = {
     1: PlayerPosition(top: 0.83, left: 1.5),
     2: PlayerPosition(top: 1.136, left: 1.5),
     3: PlayerPosition(top: 1.136, left: 2.5),
@@ -32,9 +27,10 @@ class _FieldState extends State<Field> {
     6: PlayerPosition(top: 0.789, left: 2.5),
   };
 
-  int rotation = 6;
+  final int rotationTeam1;
+  final int rotationTeam2;
 
-  int getRotation(int position) {
+  int getRotation(int position, int rotation) {
     if (position + rotation > 6) {
       return position + rotation - 6;
     } else {
@@ -52,32 +48,15 @@ class _FieldState extends State<Field> {
               "assets/field.svg",
               width: constraints.maxWidth,
             ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.white),
-              ),
-              onPressed: () => setState(() {
-                print(constraints.maxWidth);
-                if (rotation == 1) {
-                  rotation = 6;
-                } else {
-                  rotation--;
-                }
-              }),
-              child: const Text(
-                "move",
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
             ...List.generate(
               (VolleyBall.nbPlayers / 2).round(),
               (index) => AnimatedPositioned(
                 curve: Curves.ease,
                 duration: const Duration(seconds: 1),
                 top: constraints.maxWidth /
-                    positionsTeam1[getRotation(index)]!.top,
+                    positionsTeam1[getRotation(index, rotationTeam1)]!.top,
                 left: constraints.maxWidth /
-                    positionsTeam1[getRotation(index)]!.left,
+                    positionsTeam1[getRotation(index, rotationTeam1)]!.left,
                 child: Jersey(
                   color: "black",
                   number: index + 1,
@@ -91,9 +70,9 @@ class _FieldState extends State<Field> {
                 curve: Curves.ease,
                 duration: const Duration(seconds: 1),
                 top: constraints.maxWidth /
-                    positionsTeam2[getRotation(index)]!.top,
+                    positionsTeam2[getRotation(index, rotationTeam2)]!.top,
                 left: constraints.maxWidth /
-                    positionsTeam2[getRotation(index)]!.left,
+                    positionsTeam2[getRotation(index, rotationTeam2)]!.left,
                 child: Jersey(
                   color: "red",
                   number: index + 1,

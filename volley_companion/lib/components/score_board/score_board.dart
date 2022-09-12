@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:volley_companion/components/score_board/serv_dot.dart';
-import 'package:volley_companion/models/game_score.dart';
 import 'package:volley_companion/models/score.dart';
 import 'package:volley_companion/models/team.dart';
-import 'package:volley_companion/models/volleyball.dart';
 
-class ScoreBoard extends StatefulWidget {
-  const ScoreBoard({super.key, this.onServChange});
+class ScoreBoard extends StatelessWidget {
+  const ScoreBoard({
+    super.key,
+    required this.score,
+    this.service = Team.local,
+    this.onTeam1Score,
+    this.onTeam2Score,
+    this.onTeam1UndoScore,
+    this.onTeam2UndoScore,
+  });
 
-  final void Function()? onServChange;
-
-  @override
-  State<ScoreBoard> createState() => _ScoreBoardState();
-}
-
-class _ScoreBoardState extends State<ScoreBoard> {
-  int service = Team.local;
-  List<int> servHistory = [Team.local];
-  Score score = Score();
-  GameScore gameScore = GameScore();
+  final Score score;
+  final int service;
+  final void Function()? onTeam1Score;
+  final void Function()? onTeam1UndoScore;
+  final void Function()? onTeam2Score;
+  final void Function()? onTeam2UndoScore;
 
   @override
   Widget build(BuildContext context) {
@@ -35,25 +36,8 @@ class _ScoreBoardState extends State<ScoreBoard> {
               ),
             ),
             ElevatedButton(
-              onPressed: () => setState(() {
-                score.team1++;
-                servHistory.add(Team.local);
-                service = Team.local;
-                if (score.team1 < VolleyBall.maxPoints) return;
-                if (score.team1 >= VolleyBall.maxPoints &&
-                    score.team1 >= score.team2 + VolleyBall.ecartPoints) {
-                  gameScore.setsScores.add(score.clone());
-                  score.reset();
-                }
-              }),
-              onLongPress: () {
-                if (score.team1 <= 0) return;
-                setState(() {
-                  score.team1--;
-                  servHistory.removeLast();
-                  service = servHistory.last;
-                });
-              },
+              onPressed: onTeam1Score,
+              onLongPress: onTeam1UndoScore,
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.white),
               ),
@@ -67,25 +51,8 @@ class _ScoreBoardState extends State<ScoreBoard> {
               child: Text("-"),
             ),
             ElevatedButton(
-              onPressed: () => setState(() {
-                score.team2++;
-                servHistory.add(Team.visitor);
-                service = Team.visitor;
-                if (score.team2 < VolleyBall.maxPoints) return;
-                if (score.team2 >= VolleyBall.maxPoints &&
-                    score.team2 >= score.team1 + VolleyBall.ecartPoints) {
-                  gameScore.setsScores.add(score.clone());
-                  score.reset();
-                }
-              }),
-              onLongPress: () {
-                if (score.team2 <= 0) return;
-                setState(() {
-                  score.team2--;
-                  servHistory.removeLast();
-                  service = servHistory.last;
-                });
-              },
+              onPressed: onTeam2Score,
+              onLongPress: onTeam2UndoScore,
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.white),
               ),
@@ -102,20 +69,6 @@ class _ScoreBoardState extends State<ScoreBoard> {
             ),
           ],
         ),
-        SizedBox(
-          height: 15,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              gameScore.setsScores.length,
-              (index) => Padding(
-                padding: const EdgeInsets.only(left: 5, right: 5),
-                child: Text(
-                    "${gameScore.setsScores[index].team1}-${gameScore.setsScores[index].team2}"),
-              ),
-            ),
-          ),
-        )
       ],
     );
   }
