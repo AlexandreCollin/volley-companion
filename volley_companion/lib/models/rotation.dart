@@ -7,7 +7,7 @@ class Rotation {
 
   void rotate() {
     if (_rotation == 1) {
-      _rotation = 7;
+      _rotation = 6;
     } else {
       _rotation--;
     }
