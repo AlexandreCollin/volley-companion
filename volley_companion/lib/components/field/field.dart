@@ -54,9 +54,9 @@ class Field extends StatelessWidget {
                 curve: Curves.ease,
                 duration: const Duration(seconds: 1),
                 top: constraints.maxWidth /
-                    positionsTeam1[getRotation(index, rotationTeam1)]!.top,
+                    positionsTeam1[getRotation(index + 1, rotationTeam1)]!.top,
                 left: constraints.maxWidth /
-                    positionsTeam1[getRotation(index, rotationTeam1)]!.left,
+                    positionsTeam1[getRotation(index + 1, rotationTeam1)]!.left,
                 child: Jersey(
                   color: "black",
                   number: index + 1,
@@ -70,9 +70,9 @@ class Field extends StatelessWidget {
                 curve: Curves.ease,
                 duration: const Duration(seconds: 1),
                 top: constraints.maxWidth /
-                    positionsTeam2[getRotation(index, rotationTeam2)]!.top,
+                    positionsTeam2[getRotation(index + 1, rotationTeam2)]!.top,
                 left: constraints.maxWidth /
-                    positionsTeam2[getRotation(index, rotationTeam2)]!.left,
+                    positionsTeam2[getRotation(index + 1, rotationTeam2)]!.left,
                 child: Jersey(
                   color: "red",
                   number: index + 1,

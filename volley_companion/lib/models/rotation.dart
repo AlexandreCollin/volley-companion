@@ -1,5 +1,5 @@
 class Rotation {
-  int _rotation = 7;
+  int _rotation = 6;
 
   int get rotation {
     return _rotation;
