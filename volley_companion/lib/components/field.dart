@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:volley_companion/components/field/jersey.dart';
+import 'package:volley_companion/components/jersey/jersey.dart';
 import 'package:volley_companion/models/player_position.dart';
 import 'package:volley_companion/models/volleyball.dart';
 
@@ -56,9 +56,9 @@ class Field extends StatelessWidget {
                 left: constraints.maxWidth /
                     positionsTeam1[getRotation(index + 1, rotationTeam1)]!.left,
                 child: Jersey(
-                  color: "black",
+                  color: Colors.black,
                   number: index + 1,
-                  height: constraints.maxWidth / 5,
+                  width: constraints.maxWidth / 5,
                 ),
               ),
             ),
@@ -72,9 +72,9 @@ class Field extends StatelessWidget {
                 left: constraints.maxWidth /
                     positionsTeam2[getRotation(index + 1, rotationTeam2)]!.left,
                 child: Jersey(
-                  color: "red",
+                  color: Colors.red,
                   number: index + 1,
-                  height: constraints.maxWidth / 5,
+                  width: constraints.maxWidth / 5,
                 ),
               ),
             ),

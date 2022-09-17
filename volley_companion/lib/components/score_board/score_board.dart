@@ -15,7 +15,7 @@ class ScoreBoard extends StatelessWidget {
   });
 
   final Score score;
-  final int service;
+  final bool service;
   final void Function()? onTeam1Score;
   final void Function()? onTeam1UndoScore;
   final void Function()? onTeam2Score;

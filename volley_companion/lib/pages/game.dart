@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:volley_companion/components/field/field.dart';
+import 'package:volley_companion/components/field.dart';
 import 'package:volley_companion/components/score_board/score_board.dart';
 import 'package:volley_companion/models/game.dart';
 import 'package:volley_companion/models/score.dart';
@@ -7,21 +7,33 @@ import 'package:volley_companion/models/team.dart';
 import 'package:volley_companion/models/volleyball.dart';
 
 class GamePage extends StatefulWidget {
-  const GamePage({super.key});
+  const GamePage({super.key, this.service = Team.local});
+
+  final bool service;
 
   @override
   State<GamePage> createState() => _GamePageState();
 }
 
 class _GamePageState extends State<GamePage> {
-  int service = Team.local;
-  List<int> servHistory = [Team.local];
+  bool service = Team.local;
+  List<bool> servHistory = [];
   Score score = Score();
   GameInfos gameInfos = GameInfos();
 
   @override
+  void initState() {
+    super.initState();
+    setState(() {
+      service = widget.service;
+      servHistory.add(service);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
