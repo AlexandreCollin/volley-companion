@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:volley_companion/components/player_creation.dart';
-import 'package:volley_companion/components/player_icon.dart';
+import 'package:volley_companion/components/player_card.dart';
 import 'package:volley_companion/models/player.dart';
 import 'package:volley_companion/models/team.dart';
 import 'package:volley_companion/pages/game.dart';
@@ -15,16 +15,15 @@ class _GameCreationPageState extends State<GameCreationPage> {
   bool service = Team.local;
   String nameTeam1 = "";
   List<Player> playersTeam1 = [
-    Player(number: 4, startPosition: 0, name: "Alexandre"),
-    Player(number: 4, startPosition: 0, name: "Alexandre"),
-    Player(number: 4, startPosition: 0, name: "Alexandre"),
-    Player(number: 4, startPosition: 0, name: "Alexandre"),
-    Player(number: 4, startPosition: 0, name: "Alexandre"),
-    Player(number: 4, startPosition: 0, name: "Alexandre"),
-    Player(number: 4, startPosition: 0, name: "Alexandre"),
-    Player(number: 4, startPosition: 0, name: "Alexandre"),
-    Player(number: 4, startPosition: 0, name: "Alexandre"),
-    Player(number: 4, startPosition: 0, name: "Alexandre"),
+    Player(number: 4, startPosition: 0, name: "toto"),
+    Player(number: 12, startPosition: 0, name: "tata"),
+    Player(number: 10, startPosition: 0, name: "titi"),
+    Player(number: 1, startPosition: 0, name: "tutu"),
+    Player(number: 14, startPosition: 0, name: "tete"),
+    Player(number: 11, startPosition: 0, name: "tyty"),
+    Player(number: 8, startPosition: 0, name: "lala"),
+    Player(number: 3, startPosition: 0, name: "lolo"),
+    Player(number: 9, startPosition: 0, name: "lili"),
   ];
 
   @override
@@ -87,7 +86,12 @@ class _GameCreationPageState extends State<GameCreationPage> {
                       const Text("Players:"),
                       ...List.generate(
                         playersTeam1.length,
-                        (index) => PlayerIcon(player: playersTeam1[index]),
+                        (index) => PlayerCard(
+                          player: playersTeam1[index],
+                          onDelete: () => setState(
+                            () => playersTeam1.removeAt(index),
+                          ),
+                        ),
                       ),
                       SizedBox(
                         width: 20,

@@ -41,6 +41,7 @@ class Field extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Stack(
+          alignment: AlignmentDirectional.center,
           children: [
             SvgPicture.asset(
               "assets/field.svg",

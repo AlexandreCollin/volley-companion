@@ -4,7 +4,7 @@ import 'package:volley_companion/models/player.dart';
 
 Future<Player?> createPlayer(BuildContext context) async {
   String? name;
-  int number = 0;
+  int? number;
 
   return showDialog(
     context: context,
@@ -13,13 +13,6 @@ Future<Player?> createPlayer(BuildContext context) async {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(
-              onChanged: (value) => name = value,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Name (optional)",
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: TextField(
@@ -34,17 +27,27 @@ Future<Player?> createPlayer(BuildContext context) async {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+              child: TextField(
+                onChanged: (value) => name = value,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Name (optional)",
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (number == null) return;
+                Navigator.of(context).pop(
                   Player(
                     startPosition: 0,
-                    number: number,
+                    number: number!,
                     name: name,
                   ),
-                ),
-                child: const Text("Create"),
-              ),
+                );
+              },
+              child: const Text("Create"),
             ),
           ],
         ),
