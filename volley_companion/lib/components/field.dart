@@ -86,7 +86,7 @@ class Field extends StatelessWidget {
                         .left,
                 child: Jersey(
                   color: Colors.red,
-                  number: index + 1,
+                  number: visitor.players[index].number,
                   width: constraints.maxWidth / 5,
                 ),
               ),
