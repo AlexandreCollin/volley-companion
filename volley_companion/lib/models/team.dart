@@ -7,13 +7,12 @@ class Team {
   static const bool visitor = false;
 
   String name;
-  final List<Player> players;
+  final List<Player> players = [];
   Color color;
   final Rotation rotation = Rotation();
 
   Team({
-    this.name = "unknow",
-    this.players = const [],
+    this.name = "",
     this.color = Colors.white,
   });
 }

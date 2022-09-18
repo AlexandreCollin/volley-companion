@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:volley_companion/components/player_card.dart';
 import 'package:volley_companion/components/player_creation.dart';
@@ -9,11 +11,14 @@ class TeamCreationForm extends StatefulWidget {
     super.key,
     this.side = "",
     required this.team,
+    this.nameErorr,
+    this.playersError,
   });
 
   final String side;
   final Team team;
-
+  final String? nameErorr;
+  final String? playersError;
   @override
   State<TeamCreationForm> createState() => _TeamCreationFormState();
 }
@@ -27,36 +32,36 @@ class _TeamCreationFormState extends State<TeamCreationForm> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Team ${widget.side}:"),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Name",
+            Text("Team ${widget.side}:"),
+            if (widget.nameErorr != null)
+              Text(
+                widget.nameErorr!,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.red,
                 ),
-                onChanged: (value) => widget.team.name = value,
               ),
+            TextField(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Name",
+              ),
+              onChanged: (value) {
+                log("changed $value");
+                widget.team.name = value;
+              },
             ),
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8, top: 5, bottom: 5),
-            child: Row(
-              children: const [
-                Text("Players:"),
-              ],
-            ),
-          ),
+        const Padding(
+          padding: EdgeInsets.only(top: 5, bottom: 5),
+          child: Text("Players:"),
         ),
         SizedBox(
           width: double.infinity,
           child: Wrap(
+            spacing: 8,
+            runSpacing: 8,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               ...List.generate(
@@ -74,7 +79,6 @@ class _TeamCreationFormState extends State<TeamCreationForm> {
                 child: ElevatedButton(
                   onPressed: () async {
                     final Player? newPlayer = await createPlayer(context);
-
                     if (newPlayer == null) return;
                     setState(() => widget.team.players.add(newPlayer));
                   },
@@ -91,6 +95,17 @@ class _TeamCreationFormState extends State<TeamCreationForm> {
             ],
           ),
         ),
+        if (widget.playersError != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(
+              widget.playersError!,
+              style: const TextStyle(
+                fontSize: 12,
+                color: Colors.red,
+              ),
+            ),
+          ),
       ],
     );
   }
