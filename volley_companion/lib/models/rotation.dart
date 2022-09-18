@@ -1,19 +1,19 @@
 class Rotation {
-  int _rotation = 6;
+  int _value = 6;
 
-  int get rotation {
-    return _rotation;
+  int get value {
+    return _value;
   }
 
   void rotate() {
-    if (_rotation == 1) {
-      _rotation = 6;
+    if (_value == 1) {
+      _value = 6;
     } else {
-      _rotation--;
+      _value--;
     }
   }
 
   void reset() {
-    _rotation = 6;
+    _value = 6;
   }
 }

@@ -13,7 +13,7 @@ class ScoreBoard extends StatefulWidget {
   });
 
   final void Function(bool)? onServiceChanged;
-  final void Function(bool)? onSetEnd;
+  final void Function(Score)? onSetEnd;
   final bool service;
 
   @override
@@ -23,6 +23,7 @@ class ScoreBoard extends StatefulWidget {
 class _ScoreBoardState extends State<ScoreBoard> {
   final List<bool> servHistory = [];
   late bool service;
+  late bool startService;
   final Score score = Score();
 
   @override
@@ -30,6 +31,7 @@ class _ScoreBoardState extends State<ScoreBoard> {
     super.initState();
     servHistory.add(widget.service);
     service = widget.service;
+    startService = widget.service;
   }
 
   @override
@@ -57,12 +59,14 @@ class _ScoreBoardState extends State<ScoreBoard> {
                   }
                 }
                 if (score.team1 < VolleyBall.maxPoints) return;
-                if (score.team1 >= VolleyBall.maxPoints &&
-                    score.team1 >= score.team2 + VolleyBall.ecartPoints) {
+                if (score.team1 >= score.team2 + VolleyBall.ecartPoints) {
                   if (widget.onSetEnd != null) {
-                    widget.onSetEnd!(Team.local);
+                    widget.onSetEnd!(score);
                   }
                   score.reset();
+                  startService = !startService;
+                  servHistory.add(startService);
+                  service = startService;
                 }
               }),
               onLongPress: () {
@@ -96,13 +100,14 @@ class _ScoreBoardState extends State<ScoreBoard> {
                   }
                 }
                 if (score.team2 < VolleyBall.maxPoints) return;
-                if (score.team2 >= VolleyBall.maxPoints &&
-                    score.team2 >= score.team1 + VolleyBall.ecartPoints) {
-                  // gameInfos.endSet(score.clone());
+                if (score.team2 >= score.team1 + VolleyBall.ecartPoints) {
                   if (widget.onSetEnd != null) {
-                    return widget.onSetEnd!(Team.visitor);
+                    widget.onSetEnd!(score);
                   }
                   score.reset();
+                  startService = !startService;
+                  servHistory.add(startService);
+                  service = startService;
                 }
               }),
               onLongPress: () {

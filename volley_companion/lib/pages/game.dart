@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:volley_companion/components/field.dart';
 import 'package:volley_companion/components/score_board/score_board.dart';
 import 'package:volley_companion/models/game.dart';
-import 'package:volley_companion/models/score.dart';
 import 'package:volley_companion/models/team.dart';
 
 class GamePage extends StatefulWidget {
@@ -24,7 +23,6 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   bool service = Team.local;
   List<bool> servHistory = [];
-  Score score = Score();
   GameInfos gameInfos = GameInfos();
 
   @override
@@ -33,6 +31,8 @@ class _GamePageState extends State<GamePage> {
     setState(() {
       service = widget.service;
       servHistory.add(service);
+      gameInfos.local = widget.local;
+      gameInfos.visitor = widget.visitor;
     });
   }
 
@@ -51,11 +51,14 @@ class _GamePageState extends State<GamePage> {
                     service: service,
                     onServiceChanged: (team) => setState(() {
                       if (team == Team.local) {
-                        gameInfos.rotationLocal.rotate();
+                        gameInfos.local.rotation.rotate();
                       } else {
-                        gameInfos.rotationVisitor.rotate();
+                        gameInfos.visitor.rotation.rotate();
                       }
                     }),
+                    onSetEnd: (value) => setState(
+                      () => gameInfos.endSet(value),
+                    ),
                   ),
                   SizedBox(
                     height: 15,
@@ -75,8 +78,8 @@ class _GamePageState extends State<GamePage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 50),
                     child: Field(
-                      rotationTeam1: gameInfos.rotationLocal.rotation,
-                      rotationTeam2: gameInfos.rotationVisitor.rotation,
+                      local: widget.local,
+                      visitor: widget.visitor,
                     ),
                   ),
                 ],

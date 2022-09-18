@@ -17,9 +17,21 @@ class Jersey extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(width, width),
-      painter: JerseyPainter(color: Colors.red),
+    return Stack(
+      alignment: AlignmentDirectional.center,
+      children: [
+        CustomPaint(
+          size: Size(width, width),
+          painter: JerseyPainter(color: color),
+        ),
+        Text(
+          number.toString(),
+          style: TextStyle(
+            color: color != Colors.black ? Colors.black : Colors.white,
+            fontSize: width / 3,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:volley_companion/components/jersey/jersey.dart';
 import 'package:volley_companion/models/player_position.dart';
+import 'package:volley_companion/models/team.dart';
 import 'package:volley_companion/models/volleyball.dart';
 
 class Field extends StatelessWidget {
-  Field({super.key, this.rotationTeam1 = 6, this.rotationTeam2 = 6});
+  Field({
+    super.key,
+    required this.local,
+    required this.visitor,
+  });
 
   final Map<int, PlayerPosition> positionsTeam1 = {
     1: PlayerPosition(top: 5, left: 7.5),
@@ -25,8 +30,8 @@ class Field extends StatelessWidget {
     6: PlayerPosition(top: 0.789, left: 2.5),
   };
 
-  final int rotationTeam1;
-  final int rotationTeam2;
+  final Team local;
+  final Team visitor;
 
   int getRotation(int position, int rotation) {
     if (position + rotation > 6) {
@@ -41,7 +46,6 @@ class Field extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Stack(
-          alignment: AlignmentDirectional.center,
           children: [
             SvgPicture.asset(
               "assets/field.svg",
@@ -53,12 +57,16 @@ class Field extends StatelessWidget {
                 curve: Curves.ease,
                 duration: const Duration(seconds: 1),
                 top: constraints.maxWidth /
-                    positionsTeam1[getRotation(index + 1, rotationTeam1)]!.top,
+                    positionsTeam1[
+                            getRotation(index + 1, local.rotation.value)]!
+                        .top,
                 left: constraints.maxWidth /
-                    positionsTeam1[getRotation(index + 1, rotationTeam1)]!.left,
+                    positionsTeam1[
+                            getRotation(index + 1, local.rotation.value)]!
+                        .left,
                 child: Jersey(
                   color: Colors.black,
-                  number: index + 1,
+                  number: local.players[index].number,
                   width: constraints.maxWidth / 5,
                 ),
               ),
@@ -69,9 +77,13 @@ class Field extends StatelessWidget {
                 curve: Curves.ease,
                 duration: const Duration(seconds: 1),
                 top: constraints.maxWidth /
-                    positionsTeam2[getRotation(index + 1, rotationTeam2)]!.top,
+                    positionsTeam2[
+                            getRotation(index + 1, visitor.rotation.value)]!
+                        .top,
                 left: constraints.maxWidth /
-                    positionsTeam2[getRotation(index + 1, rotationTeam2)]!.left,
+                    positionsTeam2[
+                            getRotation(index + 1, visitor.rotation.value)]!
+                        .left,
                 child: Jersey(
                   color: Colors.red,
                   number: index + 1,
