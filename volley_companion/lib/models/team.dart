@@ -5,12 +5,12 @@ class Team {
   static const bool local = true;
   static const bool visitor = false;
 
-  final String name;
-  final List<Player> players;
-  final Color color;
+  String name;
+  List<Player> players;
+  Color color;
 
   Team({
-    required this.name,
+    this.name = "unknow",
     this.players = const [],
     this.color = Colors.white,
   });

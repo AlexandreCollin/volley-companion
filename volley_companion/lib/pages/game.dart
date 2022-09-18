@@ -4,12 +4,18 @@ import 'package:volley_companion/components/score_board/score_board.dart';
 import 'package:volley_companion/models/game.dart';
 import 'package:volley_companion/models/score.dart';
 import 'package:volley_companion/models/team.dart';
-import 'package:volley_companion/models/volleyball.dart';
 
 class GamePage extends StatefulWidget {
-  const GamePage({super.key, this.service = Team.local});
+  const GamePage({
+    super.key,
+    this.service = Team.local,
+    required this.local,
+    required this.visitor,
+  });
 
   final bool service;
+  final Team local;
+  final Team visitor;
 
   @override
   State<GamePage> createState() => _GamePageState();
@@ -42,52 +48,14 @@ class _GamePageState extends State<GamePage> {
               child: Column(
                 children: [
                   ScoreBoard(
-                    score: score,
                     service: service,
-                    onTeam1Score: () => setState(() {
-                      score.team1++;
-                      servHistory.add(Team.local);
-                      if (service != Team.local) {
-                        gameInfos.rotationTeam1.rotate();
-                        service = Team.local;
-                      }
-                      if (score.team1 < VolleyBall.maxPoints) return;
-                      if (score.team1 >= VolleyBall.maxPoints &&
-                          score.team1 >= score.team2 + VolleyBall.ecartPoints) {
-                        gameInfos.endSet(score.clone());
-                        score.reset();
+                    onServiceChanged: (team) => setState(() {
+                      if (team == Team.local) {
+                        gameInfos.rotationLocal.rotate();
+                      } else {
+                        gameInfos.rotationVisitor.rotate();
                       }
                     }),
-                    onTeam1UndoScore: () {
-                      if (score.team1 <= 0) return;
-                      setState(() {
-                        score.team1--;
-                        servHistory.removeLast();
-                        service = servHistory.last;
-                      });
-                    },
-                    onTeam2Score: () => setState(() {
-                      score.team2++;
-                      servHistory.add(Team.visitor);
-                      if (service != Team.visitor) {
-                        gameInfos.rotationTeam2.rotate();
-                        service = Team.visitor;
-                      }
-                      if (score.team2 < VolleyBall.maxPoints) return;
-                      if (score.team2 >= VolleyBall.maxPoints &&
-                          score.team2 >= score.team1 + VolleyBall.ecartPoints) {
-                        gameInfos.endSet(score.clone());
-                        score.reset();
-                      }
-                    }),
-                    onTeam2UndoScore: () {
-                      if (score.team2 <= 0) return;
-                      setState(() {
-                        score.team2--;
-                        servHistory.removeLast();
-                        service = servHistory.last;
-                      });
-                    },
                   ),
                   SizedBox(
                     height: 15,
@@ -107,8 +75,8 @@ class _GamePageState extends State<GamePage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 50),
                     child: Field(
-                      rotationTeam1: gameInfos.rotationTeam1.rotation,
-                      rotationTeam2: gameInfos.rotationTeam2.rotation,
+                      rotationTeam1: gameInfos.rotationLocal.rotation,
+                      rotationTeam2: gameInfos.rotationVisitor.rotation,
                     ),
                   ),
                 ],

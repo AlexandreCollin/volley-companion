@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:volley_companion/components/player_creation.dart';
-import 'package:volley_companion/components/player_card.dart';
+import 'package:volley_companion/components/team_creation_form.dart';
 import 'package:volley_companion/models/player.dart';
 import 'package:volley_companion/models/team.dart';
 import 'package:volley_companion/pages/game.dart';
@@ -13,25 +12,38 @@ class GameCreationPage extends StatefulWidget {
 
 class _GameCreationPageState extends State<GameCreationPage> {
   bool service = Team.local;
-  String nameTeam1 = "";
-  List<Player> playersTeam1 = [
-    Player(number: 4, startPosition: 0, name: "toto"),
-    Player(number: 12, startPosition: 0, name: "tata"),
-    Player(number: 10, startPosition: 0, name: "titi"),
-    Player(number: 1, startPosition: 0, name: "tutu"),
-    Player(number: 14, startPosition: 0, name: "tete"),
-    Player(number: 11, startPosition: 0, name: "tyty"),
-    Player(number: 8, startPosition: 0, name: "lala"),
-    Player(number: 3, startPosition: 0, name: "lolo"),
-    Player(number: 9, startPosition: 0, name: "lili"),
-  ];
-
+  Team local = Team(
+    players: [
+      Player(number: 4, startPosition: 0, name: "toto"),
+      Player(number: 12, startPosition: 0, name: "tata"),
+      Player(number: 10, startPosition: 0, name: "titi"),
+      Player(number: 1, startPosition: 0, name: "tutu"),
+      Player(number: 14, startPosition: 0, name: "tete"),
+      Player(number: 11, startPosition: 0, name: "tyty"),
+      Player(number: 8, startPosition: 0, name: "lala"),
+      Player(number: 3, startPosition: 0, name: "lolo"),
+      Player(number: 9, startPosition: 0, name: "lili"),
+    ],
+  );
+  Team visitor = Team(
+    players: [
+      Player(number: 4, startPosition: 0, name: "toto"),
+      Player(number: 12, startPosition: 0, name: "tata"),
+      Player(number: 10, startPosition: 0, name: "titi"),
+      Player(number: 1, startPosition: 0, name: "tutu"),
+      Player(number: 14, startPosition: 0, name: "tete"),
+      Player(number: 11, startPosition: 0, name: "tyty"),
+      Player(number: 8, startPosition: 0, name: "lala"),
+      Player(number: 3, startPosition: 0, name: "lolo"),
+      Player(number: 9, startPosition: 0, name: "lili"),
+    ],
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(top: 8.0),
           child: Column(
             children: [
               Column(
@@ -69,54 +81,13 @@ class _GameCreationPageState extends State<GameCreationPage> {
                   ),
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("Team local:"),
-                  TextField(
-                    onChanged: (value) => nameTeam1 = value,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: "Name",
-                    ),
-                  ),
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      const Text("Players:"),
-                      ...List.generate(
-                        playersTeam1.length,
-                        (index) => PlayerCard(
-                          player: playersTeam1[index],
-                          onDelete: () => setState(
-                            () => playersTeam1.removeAt(index),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            final Player? newPlayer =
-                                await createPlayer(context);
-
-                            if (newPlayer == null) return;
-                            setState(() => playersTeam1.add(newPlayer));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            shape: const CircleBorder(),
-                            padding: const EdgeInsets.all(0),
-                          ),
-                          child: const Icon(
-                            Icons.add,
-                            size: 15,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+              TeamCreationForm(
+                side: "local",
+                team: local,
+              ),
+              TeamCreationForm(
+                side: "visitor",
+                team: visitor,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -128,6 +99,8 @@ class _GameCreationPageState extends State<GameCreationPage> {
                       MaterialPageRoute(
                         builder: (context) => GamePage(
                           service: service,
+                          local: local,
+                          visitor: visitor,
                         ),
                       ),
                     ),
